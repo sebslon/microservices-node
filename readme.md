@@ -1,4 +1,6 @@
-# Second Project
+# Ticketing Project
+
+Simple microservices project to practice microservices communication (here - NATS streaming server), handling concurrency etc.
 
 - Kubernetes for deployments - each service with its own database
 - Tests setup with mongo-memory-server
@@ -8,7 +10,7 @@
 - Users can list a ticket for an event (concert, sports) for sale
 - Other users can purchase this ticket
 - Any user can list tickets for sale and purchase tickets
-- When an user attempts to purchase a ticket, the ticket is 'locked' for 15 minutes. The user has 15 minutes to enter their payment info.
+- When an user attempts to purchase a ticket, the ticket is 'locked' for 15 minutes (or another time). The user has 15 minutes to enter their payment info.
 - While locked, no other user can purchase the ticket. After 15 minutes, the ticket should 'unlock'
 - Ticket prices can be edited if they are not locked
 
@@ -22,7 +24,7 @@ Hard to picture the flow of events between services   -> Precisely define all of
 Hard to remember what properties an event should have -> Write everything in TypeScript
 Hard to test some event flows                         -> Write tests for as much possible/reasonable
 Using too much of resources on local computer         -> Run a k8s cluster in the cloud and develop on it almost as quickly as local
-Concurrency issues                                    -> Create a solutions for those
+Concurrency issues                                    -> Create a solutions for those (e.g versioning)
 ```
 
 ## Services in the project
@@ -33,7 +35,7 @@ Concurrency issues                                    -> Create a solutions for 
 - Tickets - Ticket creation/editing. Knows whether ticket can be updated (`ticket:created, ticket:updated`)
 - Orders - Order creation/editing (`order:created, order:cancelled`)
 - Expiration - Watches for oders to be created, cancels them after 15 minutes (`expiration:complete`)
-- Payments - Handles credit card payments. Cancels orders if payments fails, completes if payment succeeds (`charge:created`)
+- Payments - Handles credit card payments. Cancels orders if payments fails, completes if payment succeeds (`payment:created`)
 
 <hr>
 
