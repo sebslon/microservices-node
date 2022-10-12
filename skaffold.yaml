@@ -1,0 +1,78 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - infra/k8s/*.yaml
+build:
+  local:
+    push: false # Don't push to dockerhub (default behaviour)
+  artifacts:
+    - image: sebastiansloniec/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync: # Sync local files with container
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sebastiansloniec/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
+    - image: sebastiansloniec/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sebastiansloniec/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sebastiansloniec/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: sebastiansloniec/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+#################
+#################
+#################
+## Skaffold has nice integrations with GCP - running development environment in the cloud
+## In case of GCP, we can use skaffold to build and push images to GCR and do remote development
+# build:
+#   googleCloudBuild:
+#     projectId: {PROJECT_ID}
+#   artifacts:
+#     - image: us.gcr.io/{PROJECT_ID}/auth
+#       context: auth
+#       docker:
+#         dockerfile: Dockerfile
+#       sync:
+#         manual:
+#           - src: 'src/**/*.ts'
+#             dest: .
+#
+# + Update deployment files
+#################
