@@ -5,6 +5,8 @@ Simple microservices project to practice microservices communication (here - NAT
 - Kubernetes for deployments - each service with its own database
 - Tests setup with mongo-memory-server
 
+Taken from my other repository sebslon/Other/07-microservices-node-react/02-ticketing - extracted it to it's own repository to setup CI/CD. :)
+
 ## Quick overview - Ticketing App
 
 - Users can list a ticket for an event (concert, sports) for sale
