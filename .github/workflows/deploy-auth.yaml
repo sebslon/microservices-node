@@ -3,7 +3,7 @@ name: deploy-auth
 on:
   push: # on deploy
     branches:
-      - master
+      - main
     paths:
       - 'auth/**'
 jobs:
@@ -21,3 +21,12 @@ jobs:
       - run: docker push $DOCKER_USERNAME/auth
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      - run: doctl kubernetes cluster kubeconfig save ${{ secrets.DIGITALOCEAN_CLUSTER_NAME }}
+        env:
+          DIGITALOCEAN_CLUSTER_NAME: ${{ secrets.DIGITALOCEAN_CLUSTER_NAME }}
+      - run: kubectl rollout restart deployment auth-depl
